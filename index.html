@@ -17,10 +17,41 @@
     <body>
         <div id="main">
             <div id="error">本页面采用HTML5编辑，目前您的浏览器无法显示，请换成谷歌(<a href="http://www.google.cn/chrome/intl/zh-CN/landing_chrome.html?hl=zh-CN&brand=CHMI">Chrome</a>)或者火狐(<a href="http://firefox.com.cn/download/">Firefox</a>)浏览器，或者其他游览器的最新版本。</div>
-            <audio autoplay="autoplay" height="100" width="100">
-                    <source src="wmzj.mp3" type="audio/mp3" />
-                    <embed height="100" width="100" src="wmzj.mp3" />
+            <audio id="audios" autoplay="autoplay" loop="loop" height="100" width="100">
+                    <source src="./wmzj.mp3" type="audio/mp3" />
+                    <embed height="100" width="100" src="./wmzj.mp3" />
             </audio>
+<script>
+var audio = document.getElementById('audios');
+function audioAutoPlay(audio){
+	play = function(){
+		audio.play();
+		document.removeEventListener("touchstart",play, false);
+	};
+
+	audio.play();
+	document.addEventListener("WeixinJSBridgeReady", function () {
+		play();
+	}, false);
+
+	document.addEventListener('YixinJSBridgeReady', function() {
+		play();
+	}, false);
+
+	document.addEventListener("touchstart",play, false);
+}
+
+//每隔2秒检测是否播放音乐,播放则停止定时器
+let t = setInterval(() => {
+	if(audio.paused === false){
+		console.log('停止定时器');
+		clearInterval(t);
+	}else{
+		console.log('执行定时器');
+		audioAutoPlay(audio);
+	}
+},2000);
+</script>
             <div id="wrap">
                 <div id="text">
                     <div id="code"> <font color="#FF0000"> <span class="say">这是送给我最可爱的猫猫的礼物</span><br>
